@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart · AVSTHETIC ARCHIVE</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ─── ROOT ─── */
+        :root {
+            --dark: #0a0a0a;
+            --light: #f5f4f2;
+            --accent: #ff5a1f;
+            --card-bg: #141414;
+            --border-glow: rgba(255, 90, 31, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--dark);
+            color: var(--light);
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+            padding-top: 80px;
+        }
+
+        /* ─── GRID BACKGROUND ─── */
+        .bg-grid {
+            background:
+                linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+
+        /* ─── HEADER ─── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1050;
+            background: rgba(10, 10, 10, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+            padding: 18px 0;
+        }
+
+        .site-header .nav-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.25rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .site-header .nav-brand span {
+            color: var(--accent);
+        }
+
+        .site-header .nav-link {
+            font-family: 'Space Mono', monospace;
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--light);
+            opacity: .7;
+            padding: 6px 14px;
+            transition: .3s;
+            position: relative;
+        }
+
+        .site-header .nav-link:hover,
+        .site-header .nav-link.active {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .site-header .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 14px;
+            right: 14px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .header-cart {
+            font-size: 1.2rem;
+            color: var(--light);
+            opacity: .8;
+            transition: .3s;
+            text-decoration: none;
+            margin-left: 10px;
+            position: relative;
+        }
+
+        .header-cart:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--accent);
+            color: #000;
+            font-size: .55rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, .15);
+            padding: 6px 10px;
+            border-radius: 0;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* ─── CART HERO ─── */
+        .cart-hero {
+            padding: 40px 0 30px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
+        }
+
+        .cart-hero .breadcrumb {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: .3;
+            margin-bottom: 16px;
+        }
+
+        .cart-hero .breadcrumb a {
+            color: var(--light);
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        .cart-hero .breadcrumb a:hover {
+            color: var(--accent);
+            opacity: 1;
+        }
+
+        .cart-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.8rem, 10vw, 6rem);
+            text-transform: uppercase;
+            letter-spacing: -4px;
+            line-height: .9;
+        }
+
+        .cart-hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .cart-hero .sub {
+            font-size: .85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-top: 12px;
+        }
+
+        /* ─── CART SECTION ─── */
+        .cart-section {
+            padding: 40px 0 80px;
+        }
+
+        /* ─── CART TABLE ─── */
+        .cart-table-wrap {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, .04);
+            overflow: hidden;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .8rem;
+        }
+
+        .cart-table thead th {
+            font-family: 'Space Mono', monospace;
+            font-size: .6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            opacity: .5;
+            font-weight: 400;
+            text-align: left;
+        }
+
+        .cart-table thead th:last-child {
+            text-align: right;
+        }
+
+        .cart-table tbody td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
+            vertical-align: middle;
+        }
+
+        .cart-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cart-table .product-cell {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cart-table .product-cell .thumb {
+            width: 64px;
+            height: 80px;
+            flex-shrink: 0;
+            background: #111;
+            overflow: hidden;
+        }
+
+        .cart-table .product-cell .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-table .product-cell .info .name {
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        .cart-table .product-cell .info .meta {
+            font-size: .6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: .4;
+            margin-top: 2px;
+        }
+
+        .cart-table .product-cell .info .remove {
+            font-size: .6rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--light);
+            opacity: .3;
+            background: none;
+            border: none;
+            padding: 4px 0;
+            margin-top: 6px;
+            transition: .3s;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .cart-table .product-cell .info .remove:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .cart-table .price {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: .9rem;
+            color: var(--light);
+            white-space: nowrap;
+        }
+
+        .cart-table .price .old {
+            font-size: .65rem;
+            opacity: .3;
+            text-decoration: line-through;
+            margin-left: 8px;
+            font-weight: 400;
+        }
+
+        .cart-table .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 1px solid rgba(255, 255, 255, .06);
+            width: fit-content;
+        }
+
+        .cart-table .qty-control button {
+            background: transparent;
+            border: none;
+            color: var(--light);
+            padding: 6px 14px;
+            font-size: .7rem;
+            font-family: 'Space Mono', monospace;
+            transition: .3s;
+            cursor: pointer;
+            opacity: .6;
+        }
+
+        .cart-table .qty-control button:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .cart-table .qty-control .qty-num {
+            padding: 6px 12px;
+            font-size: .8rem;
+            min-width: 36px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            border-left: 1px solid rgba(255, 255, 255, .04);
+            border-right: 1px solid rgba(255, 255, 255, .04);
+        }
+
+        .cart-table .total-price {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: .9rem;
+            color: var(--accent);
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* ─── CART SUMMARY ─── */
+        .cart-summary {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, .04);
+            padding: 30px 32px;
+        }
+
+        .cart-summary h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .cart-summary .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: .8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
+        }
+
+        .cart-summary .summary-row:last-of-type {
+            border-bottom: 2px solid rgba(255, 90, 31, .2);
+            padding-bottom: 16px;
+        }
+
+        .cart-summary .summary-row .label {
+            opacity: .5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: .7rem;
+        }
+
+        .cart-summary .summary-row .value {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: .85rem;
+        }
+
+        .cart-summary .summary-row.total .label {
+            opacity: .8;
+            font-size: .8rem;
+        }
+
+        .cart-summary .summary-row.total .value {
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .cart-summary .promo {
+            margin: 18px 0 22px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .cart-summary .promo input {
+            flex: 1;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .06);
+            padding: 10px 16px;
+            color: var(--light);
+            font-family: 'Space Mono', monospace;
+            font-size: .7rem;
+            outline: none;
+            transition: .3s;
+        }
+
+        .cart-summary .promo input:focus {
+            border-color: var(--accent);
+        }
+
+        .cart-summary .promo input::placeholder {
+            color: rgba(255, 255, 255, .2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cart-summary .promo button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .06);
+            color: var(--light);
+            padding: 10px 22px;
+            font-family: 'Space Mono', monospace;
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: .3s;
+            cursor: pointer;
+        }
+
+        .cart-summary .promo button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-checkout {
+            display: block;
+            width: 100%;
+            background: var(--accent);
+            border: none;
+            color: #000;
+            padding: 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: .3s;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-checkout:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-checkout i {
+            margin-right: 10px;
+        }
+
+        .cart-summary .secure-badge {
+            text-align: center;
+            font-size: .55rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: .3;
+            margin-top: 16px;
+        }
+
+        .cart-summary .secure-badge i {
+            color: var(--accent);
+            opacity: .6;
+            margin-right: 6px;
+        }
+
+        /* ─── EMPTY CART ─── */
+        .empty-cart {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .empty-cart .icon {
+            font-size: 4rem;
+            opacity: .08;
+            margin-bottom: 24px;
+        }
+
+        .empty-cart h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .empty-cart p {
+            opacity: .4;
+            margin: 12px 0 28px;
+            font-size: .85rem;
+            letter-spacing: 1px;
+        }
+
+        .empty-cart .btn-continue {
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: var(--light);
+            padding: 14px 40px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: .7rem;
+            letter-spacing: 3px;
+            transition: .4s;
+        }
+
+        .empty-cart .btn-continue:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        /* ─── FLOATING TAGS ─── */
+        .floating-tag {
+            position: fixed;
+            color: rgba(255, 255, 255, .03);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatTag 8s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .floating-tag.t1 {
+            bottom: 12%;
+            left: 2%;
+            animation-delay: 0s;
+        }
+
+        .floating-tag.t2 {
+            top: 15%;
+            right: 2%;
+            animation-delay: 3s;
+            font-size: 4.2rem;
+        }
+
+        @keyframes floatTag {
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+            50% {
+                transform: translateY(-24px) rotate(2deg);
+            }
+        }
+
+        /* ─── FOOTER ─── */
+        .site-footer {
+            border-top: 1px solid rgba(255, 255, 255, .04);
+            padding: 50px 0 40px;
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: .5;
+        }
+
+        .site-footer .footer-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: -1px;
+            color: var(--light);
+            opacity: .8;
+        }
+
+        .site-footer .footer-brand span {
+            color: var(--accent);
+        }
+
+        .site-footer .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            opacity: .6;
+            transition: .3s;
+            margin: 0 12px;
+        }
+
+        .site-footer .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 68px;
+            }
+
+            .site-header {
+                padding: 12px 0;
+            }
+
+            .site-header .nav-brand {
+                font-size: 1rem;
+            }
+
+            .cart-hero {
+                padding: 24px 0 20px;
+            }
+
+            .cart-hero h1 {
+                font-size: clamp(2rem, 10vw, 3.2rem);
+                letter-spacing: -2px;
+            }
+
+            .cart-section {
+                padding: 20px 0 50px;
+            }
+
+            .cart-table-wrap {
+                overflow-x: auto;
+            }
+
+            .cart-table {
+                min-width: 640px;
+                font-size: .7rem;
+            }
+
+            .cart-table thead th {
+                padding: 12px 14px;
+                font-size: .5rem;
+            }
+
+            .cart-table tbody td {
+                padding: 12px 14px;
+            }
+
+            .cart-table .product-cell .thumb {
+                width: 48px;
+                height: 60px;
+            }
+
+            .cart-table .product-cell .info .name {
+                font-size: .7rem;
+            }
+
+            .cart-table .price {
+                font-size: .75rem;
+            }
+
+            .cart-table .total-price {
+                font-size: .75rem;
+            }
+
+            .cart-summary {
+                padding: 24px 20px;
+                margin-top: 24px;
+            }
+
+            .cart-summary .summary-row.total .value {
+                font-size: 1.1rem;
+            }
+
+            .floating-tag {
+                display: none;
+            }
+
+            .site-footer .footer-links a {
+                margin: 0 8px;
+                font-size: .65rem;
+            }
+
+            .site-footer {
+                padding: 30px 0 24px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .cart-table .qty-control button {
+                padding: 4px 10px;
+                font-size: .6rem;
+            }
+
+            .cart-table .qty-control .qty-num {
+                padding: 4px 8px;
+                min-width: 28px;
+                font-size: .7rem;
+            }
+
+            .cart-summary .promo {
+                flex-direction: column;
+            }
+
+            .cart-summary .promo button {
+                width: 100%;
+            }
+
+            .empty-cart .icon {
+                font-size: 3rem;
+            }
+
+            .empty-cart h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── FLOATING TAGS ─── -->
+    <div class="floating-tag t1">CART</div>
+    <div class="floating-tag t2">CHECKOUT</div>
+
+    <!-- ─── HEADER ─── -->
+    <header class="site-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg p-0">
+                <a class="nav-brand" href="index.html">
+                    AVSTHETIC<span>ARCHIVE</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center mt-3 mt-lg-0 gap-1">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="shopdrop.html">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="archive.html">Archive</a></li>
+                        <li class="nav-item">
+                            <a class="header-cart active" href="cart.html" title="Cart">
+                                <i class="fas fa-bag-shopping"></i>
+                                <span class="cart-badge">3</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ─── MAIN ─── -->
+    <main class="bg-grid">
+
+        <!-- ─── CART HERO ─── -->
+        <section class="cart-hero">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a> &nbsp;/&nbsp; <a href="shop.html">Shop</a> &nbsp;/&nbsp; <span style="opacity:.6;">Cart</span>
+                </div>
+
+                <div class="row align-items-end">
+                    <div class="col-lg-8">
+                        <h1>
+                            Your <span class="accent">Cart</span>
+                        </h1>
+                        <p class="sub">
+                            <i class="fas fa-arrow-right me-2" style="color:var(--accent);"></i>
+                            Review your selections before checkout
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                        <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:2px;opacity:.4;">
+                            <i class="fas fa-circle" style="color:var(--accent);font-size:.5rem;vertical-align:middle;"></i>
+                            &nbsp;3 items · $585.00
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── CART CONTENT ─── -->
+        <section class="cart-section">
+            <div class="container">
+
+                <div class="row g-4">
+
+                    <!-- ─── CART ITEMS ─── -->
+                    <div class="col-lg-8">
+
+                        <div class="cart-table-wrap">
+                            <table class="cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th style="text-align:center;">Qty</th>
+                                        <th style="text-align:right;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <!-- Item 1 -->
+                                    <tr>
+                                        <td>
+                                            <div class="product-cell">
+                                                <div class="thumb">
+                                                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=120&h=160&fit=crop&crop=center" alt="Varsity Jacket" loading="lazy" />
+                                                </div>
+                                                <div class="info">
+                                                    <div class="name">Varsity Jacket</div>
+                                                    <div class="meta">Vintage · 1990s</div>
+                                                    <button class="remove" onclick="removeItem(this)">
+                                                        <i class="fas fa-trash-alt me-1"></i> Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="price">$220</td>
+                                        <td style="text-align:center;">
+                                            <div class="qty-control" style="margin:0 auto;">
+                                                <button onclick="updateQty(this, -1)">−</button>
+                                                <span class="qty-num">1</span>
+                                                <button onclick="updateQty(this, 1)">+</button>
+                                            </div>
+                                        </td>
+                                        <td class="total-price">$220</td>
+                                    </tr>
+
+                                    <!-- Item 2 -->
+                                    <tr>
+                                        <td>
+                                            <div class="product-cell">
+                                                <div class="thumb">
+                                                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=120&h=160&fit=crop&crop=center" alt="Cargo Pants" loading="lazy" />
+                                                </div>
+                                                <div class="info">
+                                                    <div class="name">Cargo Pants</div>
+                                                    <div class="meta">Y2K · 2000s</div>
+                                                    <button class="remove" onclick="removeItem(this)">
+                                                        <i class="fas fa-trash-alt me-1"></i> Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="price">$155</td>
+                                        <td style="text-align:center;">
+                                            <div class="qty-control" style="margin:0 auto;">
+                                                <button onclick="updateQty(this, -1)">−</button>
+                                                <span class="qty-num">2</span>
+                                                <button onclick="updateQty(this, 1)">+</button>
+                                            </div>
+                                        </td>
+                                        <td class="total-price">$310</td>
+                                    </tr>
+
+                                    <!-- Item 3 -->
+                                    <tr>
+                                        <td>
+                                            <div class="product-cell">
+                                                <div class="thumb">
+                                                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=120&h=160&fit=crop&crop=center" alt="Graphic Tee" loading="lazy" />
+                                                </div>
+                                                <div class="info">
+                                                    <div class="name">Graphic Tee</div>
+                                                    <div class="meta">Streetwear · 2024</div>
+                                                    <button class="remove" onclick="removeItem(this)">
+                                                        <i class="fas fa-trash-alt me-1"></i> Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="price">$85 <span class="old">$120</span></td>
+                                        <td style="text-align:center;">
+                                            <div class="qty-control" style="margin:0 auto;">
+                                                <button onclick="updateQty(this, -1)">−</button>
+                                                <span class="qty-num">1</span>
+                                                <button onclick="updateQty(this, 1)">+</button>
+                                            </div>
+                                        </td>
+                                        <td class="total-price">$85</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Continue Shopping -->
+                        <div style="margin-top:24px;">
+                            <a href="shopdrop.html" style="color:var(--light);text-decoration:none;font-size:.7rem;text-transform:uppercase;letter-spacing:2px;opacity:.5;transition:.3s;">
+                                <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- ─── CART SUMMARY ─── -->
+                    <div class="col-lg-4">
+
+                        <div class="cart-summary">
+                            <h3>Order Summary</h3>
+
+                            <div class="summary-row">
+                                <span class="label">Subtotal</span>
+                                <span class="value">$615.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Shipping</span>
+                                <span class="value" style="color:var(--accent);">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Tax</span>
+                                <span class="value">$0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span class="label">Total</span>
+                                <span class="value">$615.00</span>
+                            </div>
+
+                            <!-- Promo Code -->
+                            <div class="promo">
+                                <input type="text" placeholder="Promo code" />
+                                <button>Apply</button>
+                            </div>
+
+                            <!-- Checkout Button -->
+                            <a href="#" class="btn-checkout">
+                                <i class="fas fa-lock"></i> Proceed to Checkout
+                            </a>
+
+                            <div class="secure-badge">
+                                <i class="fas fa-shield-alt"></i> Secure checkout · encrypted
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row align-items-center g-3">
+                <div class="col-md-4 text-md-start text-center">
+                    <div class="footer-brand">AVSTHETIC<span>ARCHIVE</span></div>
+                    <div style="font-size:.6rem;opacity:.4;margin-top:4px;letter-spacing:2px;">
+                        CURATED IN NAIROBI · 0.1V
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="footer-links">
+                        <a href="#">Instagram</a>
+                        <a href="#">X</a>
+                        <a href="#">TikTok</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end text-center" style="font-size:.6rem;opacity:.4;letter-spacing:1px;">
+                    <i class="fas fa-circle" style="color:var(--accent);font-size:.4rem;vertical-align:middle;"></i>
+                    &nbsp;SECURE · ENCRYPTED
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- ─── CART INTERACTIONS ─── -->
+    <script>
+        // ─── UPDATE QUANTITY ───
+        function updateQty(btn, delta) {
+            const row = btn.closest('tr');
+            const qtySpan = row.querySelector('.qty-num');
+            const priceEl = row.querySelector('.price');
+            const totalEl = row.querySelector('.total-price');
+
+            let qty = parseInt(qtySpan.textContent) || 0;
+            qty = Math.max(1, qty + delta);
+            qtySpan.textContent = qty;
+
+            // Get base price (remove old price if any)
+            const priceText = priceEl.textContent.replace('$', '').trim();
+            const basePrice = parseFloat(priceText.split(' ')[0]) || 0;
+            const total = basePrice * qty;
+            totalEl.textContent = '$' + total.toFixed(0);
+
+            updateSummary();
+            updateBadge();
+        }
+
+        // ─── REMOVE ITEM ───
+        function removeItem(btn) {
+            const row = btn.closest('tr');
+            row.style.transition = 'opacity .3s, transform .3s';
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(-20px)';
+            setTimeout(() => {
+                row.remove();
+                updateSummary();
+                updateBadge();
+                checkEmpty();
+            }, 300);
+        }
+
+        // ─── UPDATE SUMMARY TOTALS ───
+        function updateSummary() {
+            const rows = document.querySelectorAll('.cart-table tbody tr');
+            let subtotal = 0;
+
+            rows.forEach(row => {
+                const totalEl = row.querySelector('.total-price');
+                if (totalEl) {
+                    const val = parseFloat(totalEl.textContent.replace('$', '').trim()) || 0;
+                    subtotal += val;
+                }
+            });
+
+            const summary = document.querySelector('.cart-summary');
+            if (summary) {
+                const subtotalEl = summary.querySelector('.summary-row:nth-child(1) .value');
+                const totalEl = summary.querySelector('.summary-row.total .value');
+
+                if (subtotalEl) subtotalEl.textContent = '$' + subtotal.toFixed(0);
+                if (totalEl) totalEl.textContent = '$' + subtotal.toFixed(0);
+            }
+
+            // Update hero stats
+            const heroStats = document.querySelector('.cart-hero .col-lg-4 div');
+            if (heroStats) {
+                const count = rows.length;
+                heroStats.innerHTML =
+                    `<i class="fas fa-circle" style="color:var(--accent);font-size:.5rem;vertical-align:middle;"></i> &nbsp;${count} item${count > 1 ? 's' : ''} · $${subtotal.toFixed(0)}.00`;
+            }
+        }
+
+        // ─── UPDATE CART BADGE ───
+        function updateBadge() {
+            const rows = document.querySelectorAll('.cart-table tbody tr');
+            const badge = document.querySelector('.cart-badge');
+            if (badge) {
+                let count = 0;
+                rows.forEach(row => {
+                    const qtySpan = row.querySelector('.qty-num');
+                    if (qtySpan) count += parseInt(qtySpan.textContent) || 0;
+                });
+                badge.textContent = count || 0;
+                badge.style.transform = 'scale(1.4)';
+                setTimeout(() => badge.style.transform = 'scale(1)', 300);
+            }
+        }
+
+        // ─── CHECK EMPTY CART ───
+        function checkEmpty() {
+            const rows = document.querySelectorAll('.cart-table tbody tr');
+            const tableWrap = document.querySelector('.cart-table-wrap');
+
+            if (rows.length === 0 && tableWrap) {
+                const emptyHTML = `
+                    <div class="empty-cart">
+                        <div class="icon"><i class="fas fa-bag-shopping"></i></div>
+                        <h3>Your cart is empty</h3>
+                        <p>Looks like you haven't added anything yet.</p>
+                        <a href="shop.html" class="btn-continue">
+                            <i class="fas fa-arrow-left me-2"></i> Start Shopping
+                        </a>
+                    </div>
+                `;
+                tableWrap.innerHTML = emptyHTML;
+                // Also update summary
+                const summary = document.querySelector('.cart-summary');
+                if (summary) {
+                    summary.querySelector('.summary-row:nth-child(1) .value').textContent = '$0';
+                    summary.querySelector('.summary-row.total .value').textContent = '$0';
+                }
+                const heroStats = document.querySelector('.cart-hero .col-lg-4 div');
+                if (heroStats) heroStats.innerHTML =
+                    `<i class="fas fa-circle" style="color:var(--accent);font-size:.5rem;vertical-align:middle;"></i> &nbsp;0 items · $0.00`;
+            }
+        }
+
+        // ─── PROMO CODE (demo) ───
+        document.querySelector('.promo button')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            const input = this.closest('.promo').querySelector('input');
+            const code = input.value.trim().toUpperCase();
+            if (code === 'ARCHIVE10' || code === 'DROP10') {
+                const summary = document.querySelector('.cart-summary');
+                const subtotalEl = summary.querySelector('.summary-row:nth-child(1) .value');
+                const totalEl = summary.querySelector('.summary-row.total .value');
+                const subtotal = parseFloat(subtotalEl.textContent.replace('$', ''));
+                const discount = subtotal * 0.1;
+                // Add discount row if not exists
+                let discountRow = summary.querySelector('.summary-row.discount');
+                if (!discountRow) {
+                    discountRow = document.createElement('div');
+                    discountRow.className = 'summary-row discount';
+                    discountRow.innerHTML =
+                        `<span class="label" style="color:var(--accent);">Discount (10%)</span><span class="value" style="color:var(--accent);">-$${discount.toFixed(0)}</span>`;
+                    const totalRow = summary.querySelector('.summary-row.total');
+                    totalRow.parentNode.insertBefore(discountRow, totalRow);
+                } else {
+                    discountRow.querySelector('.value').textContent = '-$' + discount.toFixed(0);
+                }
+                const newTotal = subtotal - discount;
+                totalEl.textContent = '$' + newTotal.toFixed(0);
+                input.style.borderColor = 'var(--accent)';
+                input.value = '✓ Applied!';
+                this.textContent = '✓';
+                this.style.borderColor = 'var(--accent)';
+                this.style.color = 'var(--accent)';
+            } else if (code) {
+                input.style.borderColor = '#ff4444';
+                input.value = 'Invalid code';
+                setTimeout(() => {
+                    input.style.borderColor = '';
+                    input.value = '';
+                }, 1800);
+            }
+        });
+
+        // ─── INIT ───
+        updateSummary();
+    </script>
+
+</body>
+</html>

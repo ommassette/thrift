@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Drop · AVSTHETIC ARCHIVE</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome (icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ─── ROOT ─── */
+        :root {
+            --dark: #0a0a0a;
+            --light: #f5f4f2;
+            --accent: #ff5a1f;
+            --card-bg: #141414;
+            --border-glow: rgba(255, 90, 31, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--dark);
+            color: var(--light);
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+            padding-top: 80px;
+            /* space for fixed header */;
+        }
+
+        /* ─── GRID BACKGROUND ─── */
+        .bg-grid {
+            background:
+                linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+
+        /* ─── HEADER / NAV ─── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1050;
+            background: rgba(10, 10, 10, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+            padding: 18px 0;
+            transition: background .3s;
+        }
+
+        .site-header .nav-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.25rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .site-header .nav-brand span {
+            color: var(--accent);
+        }
+
+        .site-header .nav-link {
+            font-family: 'Space Mono', monospace;
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--light);
+            opacity: .7;
+            padding: 6px 14px;
+            transition: .3s;
+            position: relative;
+        }
+
+        .site-header .nav-link:hover,
+        .site-header .nav-link.active {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .site-header .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 14px;
+            right: 14px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .header-cart {
+            font-size: 1.2rem;
+            color: var(--light);
+            opacity: .8;
+            transition: .3s;
+            position: relative;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .header-cart:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--accent);
+            color: #000;
+            font-size: .55rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Hamburger */
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, .15);
+            padding: 6px 10px;
+            border-radius: 0;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* ─── SHOP HERO ─── */
+        .shop-hero {
+            padding: 80px 0 60px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
+        }
+
+        .shop-hero .drop-badge {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 8px 20px;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            opacity: .9;
+        }
+
+        .shop-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: clamp(3rem, 10vw, 6.5rem);
+            text-transform: uppercase;
+            letter-spacing: -4px;
+            line-height: .9;
+        }
+
+        .shop-hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .shop-hero .sub {
+            font-size: .95rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: .6;
+            margin-top: 20px;
+        }
+
+        .shop-hero .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .shop-hero .filter-bar .filter-label {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: .4;
+            margin-right: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .shop-hero .filter-bar .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .08);
+            color: var(--light);
+            padding: 6px 18px;
+            font-size: .7rem;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            cursor: pointer;
+            border-radius: 0;
+        }
+
+        .shop-hero .filter-bar .filter-btn:hover,
+        .shop-hero .filter-bar .filter-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(255, 90, 31, .06);
+        }
+
+        /* ─── SECTION TITLES ─── */
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
+            padding-bottom: 16px;
+        }
+
+        .section-head h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .section-head h2 .accent {
+            color: var(--accent);
+        }
+
+        .section-head .see-all {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--light);
+            opacity: .5;
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        .section-head .see-all:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        /* ─── CATEGORIES ─── */
+        .categories-section {
+            padding: 60px 0 40px;
+        }
+
+        .category-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, .04);
+            transition: .4s;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+            padding: 24px;
+        }
+
+        .category-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .6s ease;
+            opacity: .75;
+        }
+
+        .category-card:hover img {
+            transform: scale(1.05);
+            opacity: .9;
+        }
+
+        .category-card .cat-label {
+            position: relative;
+            z-index: 2;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, .8);
+            background: rgba(0, 0, 0, .5);
+            padding: 6px 16px;
+            backdrop-filter: blur(4px);
+            border-left: 3px solid var(--accent);
+        }
+
+        .category-card .cat-count {
+            position: relative;
+            z-index: 2;
+            font-size: .65rem;
+            opacity: .6;
+            margin-left: 12px;
+            font-family: 'Space Mono', monospace;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, .8);
+        }
+
+        /* ─── FEATURED PRODUCTS ─── */
+        .featured-section {
+            padding: 40px 0 80px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, .04);
+            transition: .4s;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            border-color: rgba(255, 90, 31, .25);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, .8);
+        }
+
+        .product-card .img-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            background: #111;
+        }
+
+        .product-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .6s ease;
+        }
+
+        .product-card:hover .img-wrap img {
+            transform: scale(1.03);
+        }
+
+        .product-card .product-tag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: var(--accent);
+            color: #000;
+            font-size: .6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 12px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .product-card .quick-view {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, .85);
+            backdrop-filter: blur(8px);
+            padding: 14px;
+            text-align: center;
+            transform: translateY(100%);
+            transition: .35s ease;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .product-card:hover .quick-view {
+            transform: translateY(0);
+        }
+
+        .product-card .quick-view a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: .3s;
+        }
+
+        .product-card .quick-view a:hover {
+            color: var(--accent);
+        }
+
+        .product-card .product-info {
+            padding: 18px 20px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card .product-info .name {
+            font-size: .9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .product-card .product-info .meta {
+            font-size: .7rem;
+            opacity: .4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .product-card .product-info .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        .product-card .product-info .price {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--accent);
+        }
+
+        .product-card .product-info .price .old {
+            font-size: .7rem;
+            opacity: .3;
+            text-decoration: line-through;
+            margin-left: 10px;
+            font-weight: 400;
+            color: var(--light);
+        }
+
+        .product-card .add-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: var(--light);
+            padding: 6px 16px;
+            font-size: .65rem;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: .3s;
+            cursor: pointer;
+            border-radius: 0;
+        }
+
+        .product-card .add-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        /* ─── FOOTER ─── */
+        .site-footer {
+            border-top: 1px solid rgba(255, 255, 255, .04);
+            padding: 50px 0 40px;
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: .5;
+        }
+
+        .site-footer .footer-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: -1px;
+            color: var(--light);
+            opacity: .8;
+        }
+
+        .site-footer .footer-brand span {
+            color: var(--accent);
+        }
+
+        .site-footer .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            opacity: .6;
+            transition: .3s;
+            margin: 0 12px;
+        }
+
+        .site-footer .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        /* ─── FLOATING TAGS (matching index) ─── */
+        .floating-tag {
+            position: fixed;
+            color: rgba(255, 255, 255, .04);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatTag 8s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .floating-tag.t1 {
+            bottom: 12%;
+            left: 3%;
+            animation-delay: 0s;
+        }
+
+        .floating-tag.t2 {
+            top: 18%;
+            right: 2%;
+            animation-delay: 3s;
+            font-size: 4rem;
+        }
+
+        @keyframes floatTag {
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+            50% {
+                transform: translateY(-24px) rotate(2deg);
+            }
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 68px;
+            }
+
+            .site-header {
+                padding: 12px 0;
+            }
+
+            .site-header .nav-brand {
+                font-size: 1rem;
+            }
+
+            .shop-hero {
+                padding: 40px 0 40px;
+            }
+
+            .shop-hero h1 {
+                font-size: clamp(2.2rem, 12vw, 3.4rem);
+                letter-spacing: -2px;
+            }
+
+            .shop-hero .filter-bar {
+                gap: 6px 10px;
+                margin-top: 20px;
+                padding-top: 16px;
+            }
+
+            .shop-hero .filter-bar .filter-btn {
+                font-size: .6rem;
+                padding: 4px 12px;
+            }
+
+            .section-head h2 {
+                font-size: 1.3rem;
+            }
+
+            .category-card .cat-label {
+                font-size: .85rem;
+                padding: 4px 12px;
+            }
+
+            .product-card .product-info .name {
+                font-size: .8rem;
+            }
+
+            .product-card .quick-view {
+                transform: translateY(0);
+                background: rgba(10, 10, 10, .7);
+                padding: 10px;
+            }
+
+            .product-card .quick-view a {
+                font-size: .6rem;
+            }
+
+            .floating-tag {
+                display: none;
+            }
+
+            .site-footer .footer-links a {
+                margin: 0 8px;
+                font-size: .65rem;
+            }
+
+            .site-footer {
+                padding: 30px 0 24px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .shop-hero .drop-badge {
+                font-size: .6rem;
+                padding: 6px 14px;
+            }
+
+            .category-card {
+                aspect-ratio: 4/3;
+            }
+
+            .product-card .img-wrap {
+                aspect-ratio: 3/4;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── FLOATING TAGS ─── -->
+    <div class="floating-tag t1">ARCHIVE</div>
+    <div class="floating-tag t2">DROP</div>
+
+    <!-- ─── HEADER ─── -->
+    <header class="site-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg p-0">
+                <a class="nav-brand" href="index.html">
+                    AVSTHETIC<span>ARCHIVE</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center mt-3 mt-lg-0 gap-1">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="shopdrop.html">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="archive.html">Archive</a></li>
+                        <li class="nav-item">
+                            <a class="header-cart" href="cart.html" title="Cart">
+                                <i class="fas fa-bag-shopping"></i>
+                                <span class="cart-badge">3</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ─── MAIN ─── -->
+    <main class="bg-grid">
+
+        <!-- ─── SHOP HERO ─── -->
+        <section class="shop-hero">
+            <div class="container">
+                <div class="row align-items-end">
+                    <div class="col-lg-8">
+                        <div class="drop-badge">
+                            <i class="fas fa-calendar-alt me-2" style="opacity:.6;"></i> DROP 06.26
+                        </div>
+                        <h1>
+                            Shop<br />
+                            <span class="accent">Drop</span>
+                        </h1>
+                        <p class="sub">
+                            <i class="fas fa-arrow-right me-2" style="color:var(--accent);"></i>
+                            Curated vintage &amp; archive pieces — limited release
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                        <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:2px;opacity:.4;">
+                            <i class="fas fa-circle" style="color:var(--accent);font-size:.5rem;vertical-align:middle;"></i>
+                            live · 350+ items
+                        </div>
+                        <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:2px;opacity:.3;margin-top:4px;">
+                            worldwide shipping
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <span class="filter-label"><i class="fas fa-sliders-h me-2"></i>filter</span>
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Vintage</button>
+                    <button class="filter-btn">Y2K</button>
+                    <button class="filter-btn">Streetwear</button>
+                    <button class="filter-btn">Archive</button>
+                    <button class="filter-btn">Accessories</button>
+                    <span style="flex:1;min-width:20px;"></span>
+                    <button class="filter-btn" style="opacity:.4;"><i class="fas fa-arrow-up-wide-short me-1"></i>Sort</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── CATEGORIES ─── -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Categories <span class="accent">·</span></h2>
+                    <a href="#" class="see-all">View All →</a>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Cat 1 -->
+                    <div class="col-6 col-md-3">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=600&fit=crop&crop=center" alt="Vintage" loading="lazy" />
+                            <div>
+                                <span class="cat-label">Vintage</span>
+                                <span class="cat-count">(84)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cat 2 -->
+                    <div class="col-6 col-md-3">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&h=600&fit=crop&crop=center" alt="Y2K" loading="lazy" />
+                            <div>
+                                <span class="cat-label">Y2K</span>
+                                <span class="cat-count">(62)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cat 3 -->
+                    <div class="col-6 col-md-3">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop&crop=center" alt="Streetwear" loading="lazy" />
+                            <div>
+                                <span class="cat-label">Streetwear</span>
+                                <span class="cat-count">(47)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cat 4 -->
+                    <div class="col-6 col-md-3">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&h=600&fit=crop&crop=center" alt="Accessories" loading="lazy" />
+                            <div>
+                                <span class="cat-label">Accessories</span>
+                                <span class="cat-count">(33)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FEATURED PIECES ─── -->
+        <section class="featured-section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Featured <span class="accent">Pieces</span></h2>
+                    <a href="#" class="see-all">View All →</a>
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- Product 1 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=500&h=625&fit=crop&crop=center" alt="Varsity Jacket" loading="lazy" />
+                                <span class="product-tag">Archive</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Varsity Jacket</div>
+                                    <div class="meta">Vintage · 1990s</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$220 <span class="old">$340</span></span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=500&h=625&fit=crop&crop=center" alt="Cargo Pants" loading="lazy" />
+                                <span class="product-tag">Y2K</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Cargo Pants</div>
+                                    <div class="meta">Y2K · 2000s</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$155</span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&h=625&fit=crop&crop=center" alt="Graphic Tee" loading="lazy" />
+                                <span class="product-tag">Streetwear</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Graphic Tee</div>
+                                    <div class="meta">Streetwear · 2024</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$85 <span class="old">$120</span></span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&h=625&fit=crop&crop=center" alt="Leather Bag" loading="lazy" />
+                                <span class="product-tag">Accessory</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Leather Bag</div>
+                                    <div class="meta">Archive · 1980s</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$310</span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500&h=625&fit=crop&crop=center" alt="Oversized Hoodie" loading="lazy" />
+                                <span class="product-tag">Vintage</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Oversized Hoodie</div>
+                                    <div class="meta">Vintage · 1990s</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$190</span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=625&fit=crop&crop=center" alt="Pleated Skirt" loading="lazy" />
+                                <span class="product-tag">Y2K</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Pleated Skirt</div>
+                                    <div class="meta">Y2K · 2000s</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$130 <span class="old">$185</span></span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 7 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&h=625&fit=crop&crop=center" alt="Bomber Jacket" loading="lazy" />
+                                <span class="product-tag">Archive</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Bomber Jacket</div>
+                                    <div class="meta">Archive · 1980s</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$275</span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 8 -->
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-card">
+                            <div class="img-wrap">
+                                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&h=625&fit=crop&crop=center" alt="Sunglasses" loading="lazy" />
+                                <span class="product-tag">Accessory</span>
+                                <div class="quick-view">
+                                    <a href="#"><i class="far fa-eye me-2"></i>Quick View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div>
+                                    <div class="name">Vintage Sunglasses</div>
+                                    <div class="meta">Accessory · 1990s</div>
+                                </div>
+                                <div class="price-row">
+                                    <span class="price">$95</span>
+                                    <button class="add-btn"><i class="fas fa-plus me-1"></i> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /row -->
+
+                <!-- Load More -->
+                <div class="text-center mt-5">
+                    <a href="#" class="btn-thrift" style="display:inline-block;border:1px solid rgba(255,255,255,.1);color:#fff;padding:14px 42px;text-decoration:none;text-transform:uppercase;letter-spacing:3px;font-size:.75rem;transition:.4s;">
+                        <i class="fas fa-rotate-right me-2"></i> Load More
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row align-items-center g-3">
+                <div class="col-md-4 text-md-start text-center">
+                    <div class="footer-brand">AVSTHETIC<span>ARCHIVE</span></div>
+                    <div style="font-size:.6rem;opacity:.4;margin-top:4px;letter-spacing:2px;">
+                        CURATED IN NAIROBI · 0.1V
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="footer-links">
+                        <a href="#">Instagram</a>
+                        <a href="#">X</a>
+                        <a href="#">TikTok</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end text-center" style="font-size:.6rem;opacity:.4;letter-spacing:1px;">
+                    <i class="fas fa-circle" style="color:var(--accent);font-size:.4rem;vertical-align:middle;"></i>
+                    &nbsp;350+ ITEMS · WORLDWIDE SHIPPING
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- ─── FILTER INTERACTION (demo) ─── -->
+    <script>
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // ─── "ADD" BUTTON FEEDBACK ───
+        document.querySelectorAll('.add-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const original = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check me-1"></i> Added';
+                this.style.borderColor = '#ff5a1f';
+                this.style.color = '#ff5a1f';
+                setTimeout(() => {
+                    this.innerHTML = original;
+                    this.style.borderColor = '';
+                    this.style.color = '';
+                }, 1600);
+
+                // Bump cart badge
+                const badge = document.querySelector('.cart-badge');
+                let count = parseInt(badge.textContent) || 0;
+                badge.textContent = count + 1;
+                badge.style.transform = 'scale(1.4)';
+                setTimeout(() => badge.style.transform = 'scale(1)', 300);
+            });
+        });
+
+        // ─── SUBTLE PARALLAX ON PRODUCT CARDS ───
+        document.querySelectorAll('.product-card .img-wrap').forEach(wrap => {
+            wrap.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                const img = this.querySelector('img');
+                if (img) {
+                    img.style.transform = `scale(1.05) translate(${x * 8}px, ${y * 8}px)`;
+                }
+            });
+            wrap.addEventListener('mouseleave', function() {
+                const img = this.querySelector('img');
+                if (img) {
+                    img.style.transform = 'scale(1) translate(0,0)';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
